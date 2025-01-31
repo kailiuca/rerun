@@ -146,10 +146,10 @@ class ComponentColumnSelector:
 class VectorDistanceMetric(Enum):
     """Which distance metric for use for vector index."""
 
-    L2: int
-    COSINE: int
-    DOT: int
-    HAMMING: int
+    L2: VectorDistanceMetric
+    COSINE: VectorDistanceMetric
+    DOT: VectorDistanceMetric
+    HAMMING: VectorDistanceMetric
     ...
 
 class Schema:

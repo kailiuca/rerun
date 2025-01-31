@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, Sequence, Type, Union
+from typing import TYPE_CHECKING, Dict, Literal, Sequence, Type, Union
 
 import numpy as np
 import numpy.typing as npt
@@ -15,8 +15,7 @@ if TYPE_CHECKING:
         ComponentColumnSelector as ComponentColumnSelector,
         IndexColumnDescriptor as IndexColumnDescriptor,
         IndexColumnSelector as IndexColumnSelector,
-        InvertedIndexQueryProperties as InvertedIndexQueryProperties,
-        VectorIndexQueryProperties as VectorIndexQueryProperties,
+        VectorDistanceMetric as VectorDistanceMetric,
     )
 
 AnyColumn: TypeAlias = Union[
@@ -75,7 +74,7 @@ TableLike: TypeAlias = Union[pa.Table, pa.RecordBatch, pa.RecordBatchReader]
 A type alias for TableLike pyarrow objects.
 """
 
-AnyIndexQueryProperties: TypeAlias = Union[VectorIndexQueryProperties, InvertedIndexQueryProperties]
+VectorDistanceMetricLike: TypeAlias = Union["VectorDistanceMetric", Literal["L2", "Cosine", "Dot", "Hamming"]]
 """
-A type alias for any index query properties.
+A type alias for vector distance metrics.
 """

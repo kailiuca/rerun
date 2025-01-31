@@ -7,10 +7,10 @@ import pyarrow as pa
 from .types import (
     AnyColumn,
     AnyComponentColumn,
-    AnyIndexQueryProperties,
     ComponentLike,
     IndexValuesLike,
     TableLike,
+    VectorDistanceMetricLike,
     ViewContentsLike,
 )
 
@@ -146,90 +146,11 @@ class ComponentColumnSelector:
 class VectorDistanceMetric(Enum):
     """Which distance metric for use for vector index."""
 
-    L2 = 1
-    COSINE = 2
-    DOT = 3
-    HAMMING = 4
+    L2: int
+    COSINE: int
+    DOT: int
+    HAMMING: int
     ...
-
-class VectorIndexProperties:
-    """Properties that define which kind of index is to be created."""
-
-    def __init__(self, num_partitions: int, num_sub_vectors: int, distance_metric: VectorDistanceMetric):
-        """
-        Create new `VectorIndexProperties`.
-
-        Parameters
-        ----------
-        num_partitions : int
-            The number of partitions for the index.
-        num_sub_vectors : int
-            The number of sub-vectors for the index.
-        distance_metric : VectorDistanceMetric
-            The distance metric to use for the index.
-
-        """
-
-        ...
-
-    @property
-    def num_partitions(self) -> int:
-        """
-        Number of partitions.
-
-        This property is read-only.
-        """
-        ...
-
-    @property
-    def num_sub_vectors(self) -> int:
-        """
-        Number of sub-vectors.
-
-        This property is read-only.
-        """
-        ...
-
-    @property
-    def distance_metric(self) -> VectorDistanceMetric:
-        """
-        Vector distance metric.
-
-        This property is read-only.
-        """
-        ...
-
-class VectorIndexQueryProperties:
-    """Vector index search properties."""
-
-    def __init__(self, top_k: int):
-        """
-        Create new `VectorIndexQueryProperties`.
-
-        Parameters
-        ----------
-        top_k : int
-            The number of results to return.
-
-        """
-
-        ...
-
-    @property
-    def top_k(self) -> int:
-        """
-        Number of results to return.
-
-        This property is read-only.
-        """
-        ...
-
-class InvertedIndexQueryProperties:
-    """Inverted index search properties."""
-
-    def __init__(self, columns: list[str]):
-        """Create new `InvertedIndexQueryProperties`."""
-        ...
 
 class Schema:
     """
@@ -776,41 +697,72 @@ class StorageNodeClient:
         """
         ...
 
-    def create_collection_index(
+    def create_vector_index(
         self,
         collection: str,
-        # TODO(zehiko) enum of different properties
-        properties: VectorIndexProperties,
         column: ComponentColumnSelector,
         time_index: IndexColumnSelector,
+        num_partitions: int,
+        num_sub_vectors: int,
+        distance_metric: VectorDistanceMetricLike,
     ) -> None:
         """
-        Create a collection index.
+        Create a vector index.
 
         Parameters
         ----------
         collection : str
             The name of the collection.
-        properties : VectorIndexProperties
-            The properties of the collection index.
         column : ComponentColumnSelector
             The component column to index.
         time_index : IndexColumnSelector
             The index column to use for the time index.
+        num_partitions : int
+            The number of partitions for the index.
+        num_sub_vectors : int
+            The number of sub-vectors for the index.
+        distance_metric : VectorDistanceMetric
+            The distance metric to use for the index.
 
         """
         ...
 
-    def query_collection_index(
+    def create_fts_index(
+        self,
+        collection: str,
+        column: ComponentColumnSelector,
+        time_index: IndexColumnSelector,
+        store_position: bool,
+        base_tokenizer: str,
+    ) -> None:
+        """
+        Create a full-text-search index.
+
+        Parameters
+        ----------
+        collection : str
+            The name of the collection.
+        column : ComponentColumnSelector
+            The component column to index.
+        time_index : IndexColumnSelector
+            The index column to use for the time index.
+        store_position : bool
+            Whether to store the position of the token in the document.
+        base_tokenizer : str
+            The base tokenizer to use.
+
+        """
+        ...
+
+    def query_vector_index(
         self,
         collection: str,
         query: TableLike,
         column: ComponentColumnSelector,
-        properties: AnyIndexQueryProperties,
-        limit: Optional[int],
+        top_k: int,
     ) -> pa.RecordBatchReader:
         """
-        Query a collection index.
+        Query a vector index.
 
         Parameters
         ----------
@@ -820,8 +772,35 @@ class StorageNodeClient:
             The query to run.
         column : ComponentColumnSelector
             The component column to query.
-        properties : IndexQueryProperties
-            The properties of the query.
+        top_k : int
+            The number of results to return.
+
+        Returns
+        -------
+        pa.RecordBatchReader
+            The results of the query.
+
+        """
+        ...
+
+    def query_fts_index(
+        self,
+        collection: str,
+        query: TableLike,
+        column: ComponentColumnSelector,
+        limit: Optional[int] = None,
+    ) -> pa.RecordBatchReader:
+        """
+        Query a vector index.
+
+        Parameters
+        ----------
+        collection : str
+            The name of the collection.
+        query : pa.RecordBatch
+            The query to run.
+        column : ComponentColumnSelector
+            The component column to query.
         limit : Optional[int]
             The maximum number of results to return.
 

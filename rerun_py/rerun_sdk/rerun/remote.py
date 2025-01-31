@@ -2,11 +2,8 @@ from __future__ import annotations
 
 try:
     from rerun_bindings import (
-        InvertedIndexQueryProperties as InvertedIndexQueryProperties,
         StorageNodeClient as StorageNodeClient,
         VectorDistanceMetric as VectorDistanceMetric,
-        VectorIndexProperties as VectorIndexProperties,
-        VectorIndexQueryProperties as VectorIndexQueryProperties,
         connect as connect,
     )
 

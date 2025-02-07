@@ -78,3 +78,6 @@ justfile
 
 # heaptrack files
 *.zst
+
+# IDE stuff
+/.idea

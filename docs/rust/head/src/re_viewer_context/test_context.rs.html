@@ -495,6 +495,7 @@
 <a href="#495" id="495">495</a>
 <a href="#496" id="496">496</a>
 <a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::atomic::AtomicBool;
 <span class="kw">use </span>std::sync::Arc;
 
@@ -680,6 +681,7 @@
             shared_wgpu_setup.device.clone(),
             shared_wgpu_setup.queue.clone(),
             wgpu::TextureFormat::Rgba8Unorm,
+            |<span class="kw">_</span>| re_renderer::RenderConfig::testing(),
         )
         .expect(<span class="string">"Failed to initialize re_renderer"</span>),
     );
@@ -702,9 +704,9 @@
     Lazy::new(init_shared_renderer_setup);
 
 <span class="kw">fn </span>init_shared_renderer_setup() -&gt; SharedWgpuResources {
-    <span class="kw">let </span>instance = wgpu::Instance::new(<span class="kw-2">&amp;</span>re_renderer::config::testing_instance_descriptor());
-    <span class="kw">let </span>adapter = re_renderer::config::select_testing_adapter(<span class="kw-2">&amp;</span>instance);
-    <span class="kw">let </span>device_caps = re_renderer::config::DeviceCaps::from_adapter(<span class="kw-2">&amp;</span>adapter)
+    <span class="kw">let </span>instance = wgpu::Instance::new(<span class="kw-2">&amp;</span>re_renderer::device_caps::testing_instance_descriptor());
+    <span class="kw">let </span>adapter = re_renderer::device_caps::select_testing_adapter(<span class="kw-2">&amp;</span>instance);
+    <span class="kw">let </span>device_caps = re_renderer::device_caps::DeviceCaps::from_adapter(<span class="kw-2">&amp;</span>adapter)
         .expect(<span class="string">"Failed to determine device capabilities"</span>);
     <span class="kw">let </span>(device, queue) =
         pollster::block_on(adapter.request_device(<span class="kw-2">&amp;</span>device_caps.device_descriptor(), <span class="prelude-val">None</span>))

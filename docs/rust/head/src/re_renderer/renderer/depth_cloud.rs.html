@@ -508,10 +508,6 @@
 <a href="#508" id="508">508</a>
 <a href="#509" id="509">509</a>
 <a href="#510" id="510">510</a>
-<a href="#511" id="511">511</a>
-<a href="#512" id="512">512</a>
-<a href="#513" id="513">513</a>
-<a href="#514" id="514">514</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Renderer that makes it easy to draw point clouds straight out of depth textures.
 //!
 //! Textures are uploaded just-in-time, no caching.
@@ -946,11 +942,7 @@
                 ..Default::default()
             },
             depth_stencil: ViewBuilder::MAIN_TARGET_DEFAULT_DEPTH_STATE,
-            multisample: wgpu::MultisampleState {
-                <span class="comment">// We discard pixels to do the round cutout, therefore we need to calculate our own sampling mask.
-                </span>alpha_to_coverage_enabled: <span class="bool-val">true</span>,
-                ..ViewBuilder::MAIN_TARGET_DEFAULT_MSAA_STATE
-            },
+            multisample: ViewBuilder::main_target_default_msaa_state(ctx.render_config(), <span class="bool-val">true</span>),
         };
         <span class="kw">let </span>render_pipeline_color =
             render_pipelines.get_or_create(ctx, <span class="kw-2">&amp;</span>render_pipeline_desc_color);

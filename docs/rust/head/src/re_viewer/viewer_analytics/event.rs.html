@@ -195,7 +195,7 @@
 <span class="kw">pub fn </span>viewer_started(
     app_env: <span class="kw-2">&amp;</span>AppEnvironment,
     adapter_backend: wgpu::Backend,
-    device_tier: re_renderer::config::DeviceTier,
+    device_tier: re_renderer::device_caps::DeviceCapabilityTier,
 ) -&gt; ViewerStarted {
     ViewerStarted {
         url: app_env.url().cloned(),

@@ -418,6 +418,10 @@
 <a href="#418" id="418">418</a>
 <a href="#419" id="419">419</a>
 <a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Example framework
 
 </span><span class="comment">// TODO(#6330): remove unwrap()
@@ -427,7 +431,9 @@
 <span class="kw">use </span>anyhow::Context <span class="kw">as _</span>;
 <span class="kw">use </span>web_time::Instant;
 
-<span class="kw">use </span>re_renderer::{config::DeviceCaps, view_builder::ViewBuilder, RenderContext};
+<span class="kw">use </span>re_renderer::{
+    device_caps::DeviceCaps, view_builder::ViewBuilder, RenderConfig, RenderContext,
+};
 
 <span class="kw">use </span>winit::{
     application::ApplicationHandler,
@@ -529,7 +535,7 @@
     <span class="kw">async fn </span>new(window: Window) -&gt; anyhow::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>window = Arc::new(window);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>instance_desc = re_renderer::config::instance_descriptor(<span class="prelude-val">None</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>instance_desc = re_renderer::device_caps::instance_descriptor(<span class="prelude-val">None</span>);
         <span class="comment">// Run without validation layers, they can be annoying on shader reload depending on the backend.
         </span>instance_desc.flags.remove(wgpu::InstanceFlags::VALIDATION);
 
@@ -561,8 +567,10 @@
         <span class="kw">let </span>output_format_color =
             preferred_framebuffer_format(<span class="kw-2">&amp;</span>surface.get_capabilities(<span class="kw-2">&amp;</span>adapter).formats);
 
-        <span class="kw">let </span>re_ctx = RenderContext::new(<span class="kw-2">&amp;</span>adapter, device, queue, output_format_color)
-            .map_err(|err| <span class="macro">anyhow::format_err!</span>(<span class="string">"{err}"</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>re_ctx = RenderContext::new(<span class="kw-2">&amp;</span>adapter, device, queue, output_format_color, |caps| {
+            RenderConfig::best_for_device_caps(caps)
+        })
+        .map_err(|err| <span class="macro">anyhow::format_err!</span>(<span class="string">"{err}"</span>))<span class="question-mark">?</span>;
 
         <span class="kw">let </span>example = E::new(<span class="kw-2">&amp;</span>re_ctx);
 

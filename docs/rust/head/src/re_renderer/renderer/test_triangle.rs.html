@@ -88,6 +88,9 @@
 <a href="#88" id="88">88</a>
 <a href="#89" id="89">89</a>
 <a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>smallvec::smallvec;
 
 <span class="kw">use crate</span>::{
@@ -154,7 +157,10 @@
                     </span>stencil: Default::default(),
                     bias: Default::default(),
                 }),
-                multisample: ViewBuilder::MAIN_TARGET_DEFAULT_MSAA_STATE,
+                multisample: ViewBuilder::main_target_default_msaa_state(
+                    ctx.render_config(),
+                    <span class="bool-val">false</span>,
+                ),
             },
         );
 

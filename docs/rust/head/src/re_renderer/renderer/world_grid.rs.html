@@ -192,6 +192,9 @@
 <a href="#192" id="192">192</a>
 <a href="#193" id="193">193</a>
 <a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     allocator::create_and_fill_uniform_buffer,
     draw_phases::DrawPhase,
@@ -357,7 +360,10 @@
                     stencil: wgpu::StencilState::default(),
                     bias: wgpu::DepthBiasState::default(),
                 }),
-                multisample: ViewBuilder::MAIN_TARGET_DEFAULT_MSAA_STATE,
+                multisample: ViewBuilder::main_target_default_msaa_state(
+                    ctx.render_config(),
+                    <span class="bool-val">false</span>,
+                ),
             },
         );
         <span class="self">Self </span>{

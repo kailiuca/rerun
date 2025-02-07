@@ -1263,7 +1263,7 @@
                 ..Default::default()
             },
             depth_stencil: ViewBuilder::MAIN_TARGET_DEFAULT_DEPTH_STATE,
-            multisample: ViewBuilder::MAIN_TARGET_DEFAULT_MSAA_STATE,
+            multisample: ViewBuilder::main_target_default_msaa_state(ctx.render_config(), <span class="bool-val">false</span>),
         };
         <span class="kw">let </span>render_pipeline_color =
             render_pipelines.get_or_create(ctx, <span class="kw-2">&amp;</span>render_pipeline_desc_color);

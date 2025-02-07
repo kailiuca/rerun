@@ -593,7 +593,7 @@
 
 </span><span class="kw">use crate</span>::{
     allocator::create_and_fill_uniform_buffer_batch,
-    config::DeviceTier,
+    device_caps::DeviceCapabilityTier,
     include_shader_module,
     renderer::screen_triangle_vertex_shader,
     view_builder::ViewBuilder,
@@ -725,7 +725,7 @@
     </span><span class="kw">const </span>VORONOI_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba16Float;
 
     <span class="doccomment">/// Default MSAA state for the outline mask target.
-    </span><span class="kw">pub fn </span>mask_default_msaa_state(tier: DeviceTier) -&gt; wgpu::MultisampleState {
+    </span><span class="kw">pub fn </span>mask_default_msaa_state(tier: DeviceCapabilityTier) -&gt; wgpu::MultisampleState {
         wgpu::MultisampleState {
             count: <span class="self">Self</span>::mask_sample_count(tier),
             mask: !<span class="number">0</span>,
@@ -734,7 +734,7 @@
     }
 
     <span class="doccomment">/// Number of MSAA samples used for the outline mask target.
-    </span><span class="kw">pub fn </span>mask_sample_count(tier: DeviceTier) -&gt; u32 {
+    </span><span class="kw">pub fn </span>mask_sample_count(tier: DeviceCapabilityTier) -&gt; u32 {
         <span class="kw">if </span>tier.support_sampling_msaa_texture() {
             <span class="comment">// The MSAA shader variant deals with *exactly* 4 samples.
             // See `jumpflooding_step_msaa.wgsl`.

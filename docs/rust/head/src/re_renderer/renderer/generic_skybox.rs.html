@@ -168,6 +168,9 @@
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
 <a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>smallvec::smallvec;
 
 <span class="kw">use crate</span>::{
@@ -307,7 +310,10 @@
                     stencil: Default::default(),
                     bias: Default::default(),
                 }),
-                multisample: ViewBuilder::MAIN_TARGET_DEFAULT_MSAA_STATE,
+                multisample: ViewBuilder::main_target_default_msaa_state(
+                    ctx.render_config(),
+                    <span class="bool-val">false</span>,
+                ),
             },
         );
         <span class="self">Self </span>{

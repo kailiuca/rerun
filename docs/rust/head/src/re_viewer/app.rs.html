@@ -2358,6 +2358,7 @@
 <a href="#2358" id="2358">2358</a>
 <a href="#2359" id="2359">2359</a>
 <a href="#2360" id="2360">2360</a>
+<a href="#2361" id="2361">2361</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>itertools::Itertools <span class="kw">as _</span>;
@@ -2674,7 +2675,7 @@
         <span class="kw">let </span>(adapter_backend, device_tier) = creation_context.wgpu_render_state.as_ref().map_or(
             (
                 wgpu::Backend::Empty,
-                re_renderer::config::DeviceTier::Limited,
+                re_renderer::device_caps::DeviceCapabilityTier::Limited,
             ),
             |render_state| {
                 <span class="kw">let </span>egui_renderer = render_state.renderer.read();
@@ -2684,9 +2685,10 @@
 
                 (
                     render_state.adapter.get_info().backend,
-                    render_ctx.map_or(re_renderer::config::DeviceTier::Limited, |ctx| {
-                        ctx.device_caps().tier
-                    }),
+                    render_ctx.map_or(
+                        re_renderer::device_caps::DeviceCapabilityTier::Limited,
+                        |ctx| ctx.device_caps().tier,
+                    ),
                 )
             },
         );

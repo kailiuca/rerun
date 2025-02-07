@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["STARTUP_FRAME_IDX"],"enum":["RenderContextError"],"fn":["adapter_info_summary","log_adapter_info"],"struct":["ActiveFrameContext","FrameGlobalCommandEncoder","RenderContext","Renderers"]};
+window.SIDEBAR_ITEMS = {"constant":["STARTUP_FRAME_IDX"],"enum":["MsaaMode","RenderContextError"],"fn":["adapter_info_summary","log_adapter_info"],"struct":["ActiveFrameContext","FrameGlobalCommandEncoder","RenderConfig","RenderContext","Renderers"]};
